@@ -1,12 +1,12 @@
-from fastapi import HTTPException, Query, Path, Header, APIRouter
+from fastapi import HTTPException, Query, Path, Header, APIRouter, Response
 
-from .models import *
-from .utils import *
+from  strava_server.models import *
+from strava_server.utils import *
 
 router = APIRouter()
 
 # Athletes Endpoints
-@router.get("/athletes/{athlete_id}/stats", response_model=ActivityStats)
+@router.get("/athletes/{athlete_id}/stats", operation_id="getAthleteStats", response_model=ActivityStats)
 async def get_athlete_stats(
     athlete_id: int = Path(..., description="The identifier of the athlete"),
     authorization: str = Header(..., description="Bearer token for authentication")
@@ -16,7 +16,7 @@ async def get_athlete_stats(
     response = await make_strava_request("GET", f"/athletes/{athlete_id}/stats", token)
     return response.json()
 
-@router.get("/athlete", response_model=DetailedAthlete)
+@router.get("/athlete", operation_id="getAuthenticatedAthlete", response_model=DetailedAthlete)
 async def get_authenticated_athlete(
     authorization: str = Header(..., description="Bearer token for authentication")
 ):
@@ -25,7 +25,7 @@ async def get_authenticated_athlete(
     response = await make_strava_request("GET", "/athlete", token)
     return response.json()
 
-@router.put("/athlete", response_model=DetailedAthlete)
+@router.put("/athlete", operation_id="updateAuthenticatedAthlete", response_model=DetailedAthlete)
 async def update_authenticated_athlete(
     weight: float = Query(..., description="The weight of the athlete in kilograms"),
     authorization: str = Header(..., description="Bearer token for authentication")
@@ -36,7 +36,7 @@ async def update_authenticated_athlete(
     response = await make_strava_request("PUT", "/athlete", token, data=data)
     return response.json()
 
-@router.get("/athlete/zones")
+@router.get("/athlete/zones", operation_id="getAuthenticatedAthleteZones")
 async def get_authenticated_athlete_zones(
     authorization: str = Header(..., description="Bearer token for authentication")
 ):
@@ -46,7 +46,7 @@ async def get_authenticated_athlete_zones(
     return response.json()
 
 # Segments Endpoints
-@router.get("/segments/{segment_id}", response_model=DetailedSegment)
+@router.get("/segments/{segment_id}", operation_id="getSegmentById", response_model=DetailedSegment)
 async def get_segment_by_id(
     segment_id: int = Path(..., description="The identifier of the segment"),
     authorization: str = Header(..., description="Bearer token for authentication")
@@ -56,7 +56,7 @@ async def get_segment_by_id(
     response = await make_strava_request("GET", f"/segments/{segment_id}", token)
     return response.json()
 
-@router.get("/segments/starred", response_model=List[SummarySegment])
+@router.get("/segments/starred", operation_id="getStarredSegments", response_model=List[SummarySegment])
 async def get_starred_segments(
     page: Optional[int] = Query(1, description="Page number"),
     per_page: Optional[int] = Query(30, description="Number of items per page"),
@@ -68,7 +68,7 @@ async def get_starred_segments(
     response = await make_strava_request("GET", "/segments/starred", token, params=params)
     return response.json()
 
-@router.get("/segments/explore")
+@router.get("/segments/explore", operation_id="exploreSegments")
 async def explore_segments(
     bounds: List[float] = Query(..., description="Rectangular boundary for search"),
     activity_type: Optional[str] = Query(None, description="Desired activity type"),
@@ -90,7 +90,7 @@ async def explore_segments(
     return response.json()
 
 # Segment Efforts Endpoints
-@router.get("/segment_efforts")
+@router.get("/segment_efforts", operation_id="getSegmentEfforts")
 async def get_segment_efforts(
     segment_id: int = Query(..., description="The identifier of the segment"),
     start_date_local: Optional[datetime] = Query(None, description="Start date filter"),
@@ -110,7 +110,7 @@ async def get_segment_efforts(
     response = await make_strava_request("GET", "/segment_efforts", token, params=params)
     return response.json()
 
-@router.get("/segment_efforts/{effort_id}")
+@router.get("/segment_efforts/{effort_id}", operation_id="getSegmentEffortById")
 async def get_segment_effort_by_id(
     effort_id: int = Path(..., description="The identifier of the segment effort"),
     authorization: str = Header(..., description="Bearer token for authentication")
@@ -120,7 +120,7 @@ async def get_segment_effort_by_id(
     response = await make_strava_request("GET", f"/segment_efforts/{effort_id}", token)
     return response.json()
 
-@router.get("/activities/{activity_id}", response_model=DetailedActivity)
+@router.get("/activities/{activity_id}", operation_id="getActivityById", response_model=DetailedActivity)
 async def get_activity_by_id(
     activity_id: int = Path(..., description="The identifier of the activity"),
     include_all_efforts: Optional[bool] = Query(False, description="Include all segment efforts"),
@@ -133,7 +133,7 @@ async def get_activity_by_id(
     response = await make_strava_request("GET", f"/activities/{activity_id}", token, params=params)
     return response.json()
 
-@router.get("/athlete/activities", response_model=List[SummaryActivity])
+@router.get("/athlete/activities", operation_id="getAthleteActivities", response_model=List[SummaryActivity])
 async def get_athlete_activities(
     before: Optional[int] = Query(None, description="Filter activities before this timestamp"),
     after: Optional[int] = Query(None, description="Filter activities after this timestamp"),
@@ -148,7 +148,7 @@ async def get_athlete_activities(
     response = await make_strava_request("GET", "/athlete/activities", token, params=params)
     return response.json()
 
-@router.get("/activities/{activity_id}/laps")
+@router.get("/activities/{activity_id}/laps", operation_id="getActivityLaps")
 async def get_activity_laps(
     activity_id: int = Path(..., description="The identifier of the activity"),
     authorization: str = Header(..., description="Bearer token for authentication")
@@ -158,7 +158,7 @@ async def get_activity_laps(
     response = await make_strava_request("GET", f"/activities/{activity_id}/laps", token)
     return response.json()
 
-@router.get("/activities/{activity_id}/zones")
+@router.get("/activities/{activity_id}/zones", operation_id="getActivityZones")
 async def get_activity_zones(
     activity_id: int = Path(..., description="The identifier of the activity"),
     authorization: str = Header(..., description="Bearer token for authentication")
@@ -168,7 +168,7 @@ async def get_activity_zones(
     response = await make_strava_request("GET", f"/activities/{activity_id}/zones", token)
     return response.json()
 
-@router.get("/activities/{activity_id}/comments")
+@router.get("/activities/{activity_id}/comments", operation_id="getActivityComments")
 async def get_activity_comments(
     activity_id: int = Path(..., description="The identifier of the activity"),
     page: Optional[int] = Query(None, description="Page number (deprecated)"),
@@ -189,7 +189,7 @@ async def get_activity_comments(
     response = await make_strava_request("GET", f"/activities/{activity_id}/comments", token, params=params)
     return response.json()
 
-@router.get("/activities/{activity_id}/kudos")
+@router.get("/activities/{activity_id}/kudos", operation_id="getActivityKudos")
 async def get_activity_kudos(
     activity_id: int = Path(..., description="The identifier of the activity"),
     page: Optional[int] = Query(1, description="Page number"),
@@ -203,7 +203,7 @@ async def get_activity_kudos(
     return response.json()
 
 # Clubs Endpoints
-@router.get("/clubs/{club_id}", response_model=DetailedClub)
+@router.get("/clubs/{club_id}", response_model=DetailedClub, operation_id="getClubById")
 async def get_club_by_id(
     club_id: int = Path(..., description="The identifier of the club"),
     authorization: str = Header(..., description="Bearer token for authentication")
@@ -213,7 +213,7 @@ async def get_club_by_id(
     response = await make_strava_request("GET", f"/clubs/{club_id}", token)
     return response.json()
 
-@router.get("/clubs/{club_id}/members")
+@router.get("/clubs/{club_id}/members", operation_id="getClubMembers")
 async def get_club_members(
     club_id: int = Path(..., description="The identifier of the club"),
     page: Optional[int] = Query(1, description="Page number"),
@@ -226,20 +226,7 @@ async def get_club_members(
     response = await make_strava_request("GET", f"/clubs/{club_id}/members", token, params=params)
     return response.json()
 
-@router.get("/clubs/{club_id}/admins")
-async def get_club_admins(
-    club_id: int = Path(..., description="The identifier of the club"),
-    page: Optional[int] = Query(1, description="Page number"),
-    per_page: Optional[int] = Query(30, description="Number of items per page"),
-    authorization: str = Header(..., description="Bearer token for authentication")
-):
-    """Returns club administrators."""
-    token = extract_bearer_token(authorization)
-    params = {"page": page, "per_page": per_page}
-    response = await make_strava_request("GET", f"/clubs/{club_id}/admins", token, params=params)
-    return response.json()
-
-@router.get("/clubs/{club_id}/activities")
+@router.get("/clubs/{club_id}/activities", operation_id="getClubActivities")
 async def get_club_activities(
     club_id: int = Path(..., description="The identifier of the club"),
     page: Optional[int] = Query(1, description="Page number"),
@@ -252,7 +239,7 @@ async def get_club_activities(
     response = await make_strava_request("GET", f"/clubs/{club_id}/activities", token, params=params)
     return response.json()
 
-@router.get("/athlete/clubs", response_model=List[SummaryClub])
+@router.get("/athlete/clubs", response_model=List[SummaryClub], operation_id="getAthleteClubs")
 async def get_athlete_clubs(
     page: Optional[int] = Query(1, description="Page number"),
     per_page: Optional[int] = Query(30, description="Number of items per page"),
@@ -265,7 +252,7 @@ async def get_athlete_clubs(
     return response.json()
 
 # Gear Endpoints
-@router.get("/gear/{gear_id}")
+@router.get("/gear/{gear_id}", operation_id="getGearById")
 async def get_gear_by_id(
     gear_id: str = Path(..., description="The identifier of the gear"),
     authorization: str = Header(..., description="Bearer token for authentication")
@@ -276,7 +263,7 @@ async def get_gear_by_id(
     return response.json()
 
 # Routes Endpoints
-@router.get("/routes/{route_id}")
+@router.get("/routes/{route_id}", operation_id="getRouteById")
 async def get_route_by_id(
     route_id: int = Path(..., description="The identifier of the route"),
     authorization: str = Header(..., description="Bearer token for authentication")
@@ -286,7 +273,7 @@ async def get_route_by_id(
     response = await make_strava_request("GET", f"/routes/{route_id}", token)
     return response.json()
 
-@router.get("/athletes/{athlete_id}/routes")
+@router.get("/athletes/{athlete_id}/routes", operation_id="getAthleteRoutes")
 async def get_athlete_routes(
     athlete_id: int = Path(..., description="The identifier of the athlete"),
     page: Optional[int] = Query(1, description="Page number"),
@@ -299,27 +286,7 @@ async def get_athlete_routes(
     response = await make_strava_request("GET", f"/athletes/{athlete_id}/routes", token, params=params)
     return response.json()
 
-@router.get("/routes/{route_id}/export_gpx")
-async def get_route_as_gpx(
-    route_id: int = Path(..., description="The identifier of the route"),
-    authorization: str = Header(..., description="Bearer token for authentication")
-):
-    """Returns a GPX file of the route."""
-    token = extract_bearer_token(authorization)
-    response = await make_strava_request("GET", f"/routes/{route_id}/export_gpx", token)
-    return Response(content=response.content, media_type="application/gpx+xml")
-
-@router.get("/routes/{route_id}/export_tcx")
-async def get_route_as_tcx(
-    route_id: int = Path(..., description="The identifier of the route"),
-    authorization: str = Header(..., description="Bearer token for authentication")
-):
-    """Returns a TCX file of the route."""
-    token = extract_bearer_token(authorization)
-    response = await make_strava_request("GET", f"/routes/{route_id}/export_tcx", token)
-    return Response(content=response.content, media_type="application/tcx+xml")
-
-@router.get("/uploads/{upload_id}")
+@router.get("/uploads/{upload_id}", operation_id="getUploadById")
 async def get_upload_by_id(
     upload_id: int = Path(..., description="The identifier of the upload"),
     authorization: str = Header(..., description="Bearer token for authentication")
@@ -330,7 +297,7 @@ async def get_upload_by_id(
     return response.json()
 
 # Streams Endpoints
-@router.get("/activities/{activity_id}/streams")
+@router.get("/activities/{activity_id}/streams", operation_id="getSegmentStreams")
 async def get_activity_streams(
     activity_id: int = Path(..., description="The identifier of the activity"),
     keys: List[StreamTypeEnum] = Query(..., description="Desired stream types"),
@@ -346,7 +313,10 @@ async def get_activity_streams(
     response = await make_strava_request("GET", f"/activities/{activity_id}/streams", token, params=params)
     return response.json()
 
-@router.get("/segment_efforts/{effort_id}/streams")
+@router.get("/segment_efforts/{effort_id}/streams", 
+            operation_id="getSegmentEffortStreams", 
+            summary="Get streams for a segment effort",
+            description="Returns streams data (like distance, time, etc.) for a given segment effort.")
 async def get_segment_effort_streams(
     effort_id: int = Path(..., description="The identifier of the segment effort"),
     keys: List[StreamTypeEnum] = Query(..., description="The types of streams to return"),
@@ -362,7 +332,7 @@ async def get_segment_effort_streams(
     response = await make_strava_request("GET", f"/segment_efforts/{effort_id}/streams", token, params=params)
     return response.json()
 
-@router.get("/segments/{segment_id}/streams")
+@router.get("/segments/{segment_id}/streams", operation_id="getSegmentStreamById")
 async def get_segment_streams(
     segment_id: int = Path(..., description="The identifier of the segment"),
     keys: List[str] = Query(..., description="The types of streams to return"),
@@ -384,7 +354,7 @@ async def get_segment_streams(
     response = await make_strava_request("GET", f"/segments/{segment_id}/streams", token, params=params)
     return response.json()
 
-@router.get("/routes/{route_id}/streams")
+@router.get("/routes/{route_id}/streams", operation_id="getRouteStreams")
 async def get_route_streams(
     route_id: int = Path(..., description="The identifier of the route"),
     authorization: str = Header(..., description="Bearer token for authentication")
@@ -395,7 +365,7 @@ async def get_route_streams(
     return response.json()
 
 # Health check endpoint
-@router.get("/health")
+@router.get("/health", operation_id="healthCheckForAPI")
 async def health_check():
     """Health check endpoint."""
     return {"status": "healthy", "service": "Strava API FastAPI Implementation"}
