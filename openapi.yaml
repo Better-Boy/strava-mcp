@@ -1,0 +1,2518 @@
+openapi: 3.0.9
+info:
+  title: Strava API v3
+  description: FastAPI implementation of Strava API v3
+  version: 3.0.0
+paths:
+  /athletes/{athlete_id}/stats:
+    get:
+      summary: Get Athlete Stats
+      description: Returns the activity stats of an athlete.
+      operationId: getAthleteStats
+      parameters:
+        - name: athlete_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: The identifier of the athlete
+            title: Athlete Id
+          description: The identifier of the athlete
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityStats'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /athlete:
+    get:
+      summary: Get Authenticated Athlete
+      description: Returns the currently authenticated athlete.
+      operationId: getAuthenticatedAthlete
+      parameters:
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedAthlete'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      summary: Update Authenticated Athlete
+      description: Update the currently authenticated athlete.
+      operationId: updateAuthenticatedAthlete
+      parameters:
+        - name: weight
+          in: query
+          required: true
+          schema:
+            type: number
+            description: The weight of the athlete in kilograms
+            title: Weight
+          description: The weight of the athlete in kilograms
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedAthlete'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /athlete/zones:
+    get:
+      summary: Get Authenticated Athlete Zones
+      description: Returns the authenticated athlete's heart rate and power zones.
+      operationId: getAuthenticatedAthleteZones
+      parameters:
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /segments/{segment_id}:
+    get:
+      summary: Get Segment By Id
+      description: Returns the specified segment.
+      operationId: getSegmentById
+      parameters:
+        - name: segment_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: The identifier of the segment
+            title: Segment Id
+          description: The identifier of the segment
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedSegment'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /segments/starred:
+    get:
+      summary: Get Starred Segments
+      description: List of the authenticated athlete's starred segments.
+      operationId: getStarredSegments
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: integer
+            nullable: true
+            description: Page number
+            default: 1
+            title: Page
+          description: Page number
+        - name: per_page
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: integer
+            nullable: true
+            description: Number of items per page
+            default: 30
+            title: Per Page
+          description: Number of items per page
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SummarySegment'
+                title: Response Getstarredsegments
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /segments/explore:
+    get:
+      summary: Explore Segments
+      description: Returns the top 10 segments matching a specified query.
+      operationId: exploreSegments
+      parameters:
+        - name: bounds
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: number
+            description: Rectangular boundary for search
+            title: Bounds
+          description: Rectangular boundary for search
+        - name: activity_type
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: string
+            nullable: true
+            description: Desired activity type
+            title: Activity Type
+          description: Desired activity type
+        - name: min_cat
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: integer
+                maximum: 5
+                minimum: 0
+            nullable: true
+            description: Minimum climbing category
+            title: Min Cat
+          description: Minimum climbing category
+        - name: max_cat
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: integer
+                maximum: 5
+                minimum: 0
+            nullable: true
+            description: Maximum climbing category
+            title: Max Cat
+          description: Maximum climbing category
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /segment_efforts:
+    get:
+      summary: Get Segment Efforts
+      description: Returns segment efforts for a given segment.
+      operationId: getSegmentEfforts
+      parameters:
+        - name: segment_id
+          in: query
+          required: true
+          schema:
+            type: integer
+            description: The identifier of the segment
+            title: Segment Id
+          description: The identifier of the segment
+        - name: start_date_local
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: string
+                format: date-time
+            nullable: true
+            description: Start date filter
+            title: Start Date Local
+          description: Start date filter
+        - name: end_date_local
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: string
+                format: date-time
+            nullable: true
+            description: End date filter
+            title: End Date Local
+          description: End date filter
+        - name: per_page
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: integer
+            nullable: true
+            description: Number of items per page
+            default: 30
+            title: Per Page
+          description: Number of items per page
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /segment_efforts/{effort_id}:
+    get:
+      summary: Get Segment Effort By Id
+      description: Returns a segment effort from an activity.
+      operationId: getSegmentEffortById
+      parameters:
+        - name: effort_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: The identifier of the segment effort
+            title: Effort Id
+          description: The identifier of the segment effort
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /activities/{activity_id}:
+    get:
+      summary: Get Activity By Id
+      description: Returns the given activity.
+      operationId: getActivityById
+      parameters:
+        - name: activity_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: The identifier of the activity
+            title: Activity Id
+          description: The identifier of the activity
+        - name: include_all_efforts
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: boolean
+            nullable: true
+            description: Include all segment efforts
+            default: false
+            title: Include All Efforts
+          description: Include all segment efforts
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedActivity'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /athlete/activities:
+    get:
+      summary: Get Athlete Activities
+      description: Returns the activities of the authenticated athlete.
+      operationId: getAthleteActivities
+      parameters:
+        - name: before
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: integer
+            nullable: true
+            description: Filter activities before this timestamp
+            title: Before
+          description: Filter activities before this timestamp
+        - name: after
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: integer
+            nullable: true
+            description: Filter activities after this timestamp
+            title: After
+          description: Filter activities after this timestamp
+        - name: page
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: integer
+            nullable: true
+            description: Page number
+            default: 1
+            title: Page
+          description: Page number
+        - name: per_page
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: integer
+            nullable: true
+            description: Number of items per page
+            default: 30
+            title: Per Page
+          description: Number of items per page
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SummaryActivity'
+                title: Response Getathleteactivities
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /activities/{activity_id}/laps:
+    get:
+      summary: Get Activity Laps
+      description: Returns the laps of an activity.
+      operationId: getActivityLaps
+      parameters:
+        - name: activity_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: The identifier of the activity
+            title: Activity Id
+          description: The identifier of the activity
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /activities/{activity_id}/zones:
+    get:
+      summary: Get Activity Zones
+      description: Returns the zones of a given activity.
+      operationId: getActivityZones
+      parameters:
+        - name: activity_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: The identifier of the activity
+            title: Activity Id
+          description: The identifier of the activity
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /activities/{activity_id}/comments:
+    get:
+      summary: Get Activity Comments
+      description: Returns the comments on the given activity.
+      operationId: getActivityComments
+      parameters:
+        - name: activity_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: The identifier of the activity
+            title: Activity Id
+          description: The identifier of the activity
+        - name: page
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: integer
+            nullable: true
+            description: Page number (deprecated)
+            title: Page
+          description: Page number (deprecated)
+        - name: per_page
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: integer
+            nullable: true
+            description: Items per page (deprecated)
+            default: 30
+            title: Per Page
+          description: Items per page (deprecated)
+        - name: page_size
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: integer
+            nullable: true
+            description: Number of items per page
+            default: 30
+            title: Page Size
+          description: Number of items per page
+        - name: after_cursor
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: string
+            nullable: true
+            description: Cursor for pagination
+            title: After Cursor
+          description: Cursor for pagination
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /activities/{activity_id}/kudos:
+    get:
+      summary: Get Activity Kudos
+      description: Returns the athletes who kudoed an activity.
+      operationId: getActivityKudos
+      parameters:
+        - name: activity_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: The identifier of the activity
+            title: Activity Id
+          description: The identifier of the activity
+        - name: page
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: integer
+            nullable: true
+            description: Page number
+            default: 1
+            title: Page
+          description: Page number
+        - name: per_page
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: integer
+            nullable: true
+            description: Number of items per page
+            default: 30
+            title: Per Page
+          description: Number of items per page
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /clubs/{club_id}:
+    get:
+      summary: Get Club By Id
+      description: Returns a given club.
+      operationId: getClubById
+      parameters:
+        - name: club_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: The identifier of the club
+            title: Club Id
+          description: The identifier of the club
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedClub'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /clubs/{club_id}/members:
+    get:
+      summary: Get Club Members
+      description: Returns club members.
+      operationId: getClubMembers
+      parameters:
+        - name: club_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: The identifier of the club
+            title: Club Id
+          description: The identifier of the club
+        - name: page
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: integer
+            nullable: true
+            description: Page number
+            default: 1
+            title: Page
+          description: Page number
+        - name: per_page
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: integer
+            nullable: true
+            description: Number of items per page
+            default: 30
+            title: Per Page
+          description: Number of items per page
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /clubs/{club_id}/activities:
+    get:
+      summary: Get Club Activities
+      description: Returns recent activities from club members.
+      operationId: getClubActivities
+      parameters:
+        - name: club_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: The identifier of the club
+            title: Club Id
+          description: The identifier of the club
+        - name: page
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: integer
+            nullable: true
+            description: Page number
+            default: 1
+            title: Page
+          description: Page number
+        - name: per_page
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: integer
+            nullable: true
+            description: Number of items per page
+            default: 30
+            title: Per Page
+          description: Number of items per page
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /athlete/clubs:
+    get:
+      summary: Get Athlete Clubs
+      description: Returns clubs the authenticated athlete belongs to.
+      operationId: getAthleteClubs
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: integer
+            nullable: true
+            description: Page number
+            default: 1
+            title: Page
+          description: Page number
+        - name: per_page
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: integer
+            nullable: true
+            description: Number of items per page
+            default: 30
+            title: Per Page
+          description: Number of items per page
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SummaryClub'
+                title: Response Getathleteclubs
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /gear/{gear_id}:
+    get:
+      summary: Get Gear By Id
+      description: Returns equipment using its identifier.
+      operationId: getGearById
+      parameters:
+        - name: gear_id
+          in: path
+          required: true
+          schema:
+            type: string
+            description: The identifier of the gear
+            title: Gear Id
+          description: The identifier of the gear
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /routes/{route_id}:
+    get:
+      summary: Get Route By Id
+      description: Returns a route using its identifier.
+      operationId: getRouteById
+      parameters:
+        - name: route_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: The identifier of the route
+            title: Route Id
+          description: The identifier of the route
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /athletes/{athlete_id}/routes:
+    get:
+      summary: Get Athlete Routes
+      description: Returns routes created by the athlete.
+      operationId: getAthleteRoutes
+      parameters:
+        - name: athlete_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: The identifier of the athlete
+            title: Athlete Id
+          description: The identifier of the athlete
+        - name: page
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: integer
+            nullable: true
+            description: Page number
+            default: 1
+            title: Page
+          description: Page number
+        - name: per_page
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: integer
+            nullable: true
+            description: Number of items per page
+            default: 30
+            title: Per Page
+          description: Number of items per page
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /uploads/{upload_id}:
+    get:
+      summary: Get Upload By Id
+      description: Returns an upload for a given identifier.
+      operationId: getUploadById
+      parameters:
+        - name: upload_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: The identifier of the upload
+            title: Upload Id
+          description: The identifier of the upload
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /activities/{activity_id}/streams:
+    get:
+      summary: Get Activity Streams
+      description: Returns the given activity's streams.
+      operationId: getSegmentStreams
+      parameters:
+        - name: activity_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: The identifier of the activity
+            title: Activity Id
+          description: The identifier of the activity
+        - name: keys
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/StreamTypeEnum'
+            description: Desired stream types
+            title: Keys
+          description: Desired stream types
+        - name: key_by_type
+          in: query
+          required: false
+          schema:
+            type: boolean
+            description: Must be true
+            default: true
+            title: Key By Type
+          description: Must be true
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /segment_efforts/{effort_id}/streams:
+    get:
+      summary: Get streams for a segment effort
+      description: Returns streams data (like distance, time, etc.) for a given segment effort.
+      operationId: getSegmentEffortStreams
+      parameters:
+        - name: effort_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: The identifier of the segment effort
+            title: Effort Id
+          description: The identifier of the segment effort
+        - name: keys
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/StreamTypeEnum'
+            description: The types of streams to return
+            title: Keys
+          description: The types of streams to return
+        - name: key_by_type
+          in: query
+          required: false
+          schema:
+            type: boolean
+            description: Must be true
+            default: true
+            title: Key By Type
+          description: Must be true
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /segments/{segment_id}/streams:
+    get:
+      summary: Get Segment Streams
+      description: Returns the given segment's streams.
+      operationId: getSegmentStreamById
+      parameters:
+        - name: segment_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: The identifier of the segment
+            title: Segment Id
+          description: The identifier of the segment
+        - name: keys
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+            description: The types of streams to return
+            title: Keys
+          description: The types of streams to return
+        - name: key_by_type
+          in: query
+          required: false
+          schema:
+            type: boolean
+            description: Must be true
+            default: true
+            title: Key By Type
+          description: Must be true
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /routes/{route_id}/streams:
+    get:
+      summary: Get Route Streams
+      description: Returns the given route's streams.
+      operationId: getRouteStreams
+      parameters:
+        - name: route_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: The identifier of the route
+            title: Route Id
+          description: The identifier of the route
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /health:
+    get:
+      summary: Health Check
+      description: Health check endpoint.
+      operationId: healthCheckForAPI
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /:
+    get:
+      summary: Root
+      description: API information and documentation.
+      operationId: root__get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+components:
+  schemas:
+    ActivityStats:
+      properties:
+        recent_ride_totals:
+          anyOf:
+            - additionalProperties: true
+              type: object
+          nullable: true
+          title: Recent Ride Totals
+        recent_run_totals:
+          anyOf:
+            - additionalProperties: true
+              type: object
+          nullable: true
+          title: Recent Run Totals
+        ytd_ride_totals:
+          anyOf:
+            - additionalProperties: true
+              type: object
+          nullable: true
+          title: Ytd Ride Totals
+        ytd_run_totals:
+          anyOf:
+            - additionalProperties: true
+              type: object
+          nullable: true
+          title: Ytd Run Totals
+        all_ride_totals:
+          anyOf:
+            - additionalProperties: true
+              type: object
+          nullable: true
+          title: All Ride Totals
+        all_run_totals:
+          anyOf:
+            - additionalProperties: true
+              type: object
+          nullable: true
+          title: All Run Totals
+      type: object
+      title: ActivityStats
+    DetailedActivity:
+      properties:
+        id:
+          type: integer
+          title: Id
+        resource_state:
+          type: integer
+          title: Resource State
+        external_id:
+          anyOf:
+            - type: string
+          nullable: true
+          title: External Id
+        upload_id:
+          anyOf:
+            - type: integer
+          nullable: true
+          title: Upload Id
+        athlete:
+          $ref: '#/components/schemas/SummaryAthlete'
+        name:
+          type: string
+          title: Name
+        distance:
+          type: number
+          title: Distance
+        moving_time:
+          type: integer
+          title: Moving Time
+        elapsed_time:
+          type: integer
+          title: Elapsed Time
+        total_elevation_gain:
+          type: number
+          title: Total Elevation Gain
+        type:
+          type: string
+          title: Type
+        sport_type:
+          type: string
+          title: Sport Type
+        start_date:
+          type: string
+          format: date-time
+          title: Start Date
+        start_date_local:
+          type: string
+          format: date-time
+          title: Start Date Local
+        timezone:
+          type: string
+          title: Timezone
+        utc_offset:
+          type: integer
+          title: Utc Offset
+        start_latlng:
+          anyOf:
+            - items:
+                type: number
+              type: array
+          nullable: true
+          title: Start Latlng
+        end_latlng:
+          anyOf:
+            - items:
+                type: number
+              type: array
+          nullable: true
+          title: End Latlng
+        location_city:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Location City
+        location_state:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Location State
+        location_country:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Location Country
+        achievement_count:
+          type: integer
+          title: Achievement Count
+        kudos_count:
+          type: integer
+          title: Kudos Count
+        comment_count:
+          type: integer
+          title: Comment Count
+        athlete_count:
+          type: integer
+          title: Athlete Count
+        photo_count:
+          type: integer
+          title: Photo Count
+        map:
+          anyOf:
+            - additionalProperties: true
+              type: object
+          nullable: true
+          title: Map
+        trainer:
+          type: boolean
+          title: Trainer
+        commute:
+          type: boolean
+          title: Commute
+        manual:
+          type: boolean
+          title: Manual
+        private:
+          type: boolean
+          title: Private
+        flagged:
+          type: boolean
+          title: Flagged
+        gear_id:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Gear Id
+        from_accepted_tag:
+          anyOf:
+            - type: boolean
+          nullable: true
+          title: From Accepted Tag
+        average_speed:
+          type: number
+          title: Average Speed
+        max_speed:
+          type: number
+          title: Max Speed
+        average_cadence:
+          anyOf:
+            - type: number
+          nullable: true
+          title: Average Cadence
+        average_temp:
+          anyOf:
+            - type: integer
+          nullable: true
+          title: Average Temp
+        average_watts:
+          anyOf:
+            - type: number
+          nullable: true
+          title: Average Watts
+        weighted_average_watts:
+          anyOf:
+            - type: integer
+          nullable: true
+          title: Weighted Average Watts
+        kilojoules:
+          anyOf:
+            - type: number
+          nullable: true
+          title: Kilojoules
+        device_watts:
+          anyOf:
+            - type: boolean
+          nullable: true
+          title: Device Watts
+        has_heartrate:
+          type: boolean
+          title: Has Heartrate
+        average_heartrate:
+          anyOf:
+            - type: number
+          nullable: true
+          title: Average Heartrate
+        max_heartrate:
+          anyOf:
+            - type: integer
+          nullable: true
+          title: Max Heartrate
+        max_watts:
+          anyOf:
+            - type: integer
+          nullable: true
+          title: Max Watts
+        elev_high:
+          anyOf:
+            - type: number
+          nullable: true
+          title: Elev High
+        elev_low:
+          anyOf:
+            - type: number
+          nullable: true
+          title: Elev Low
+        pr_count:
+          type: integer
+          title: Pr Count
+        total_photo_count:
+          type: integer
+          title: Total Photo Count
+        has_kudoed:
+          type: boolean
+          title: Has Kudoed
+        workout_type:
+          anyOf:
+            - type: integer
+          nullable: true
+          title: Workout Type
+        suffer_score:
+          anyOf:
+            - type: integer
+          nullable: true
+          title: Suffer Score
+        description:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Description
+        calories:
+          anyOf:
+            - type: number
+          nullable: true
+          title: Calories
+        segment_efforts:
+          anyOf:
+            - items:
+                additionalProperties: true
+                type: object
+              type: array
+          nullable: true
+          title: Segment Efforts
+          default: []
+        splits_metric:
+          anyOf:
+            - items:
+                additionalProperties: true
+                type: object
+              type: array
+          nullable: true
+          title: Splits Metric
+          default: []
+        laps:
+          anyOf:
+            - items:
+                additionalProperties: true
+                type: object
+              type: array
+          nullable: true
+          title: Laps
+          default: []
+        gear:
+          anyOf:
+            - additionalProperties: true
+              type: object
+          nullable: true
+          title: Gear
+        partner_brand_tag:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Partner Brand Tag
+        photos:
+          anyOf:
+            - additionalProperties: true
+              type: object
+          nullable: true
+          title: Photos
+        highlighted_kudosers:
+          anyOf:
+            - items:
+                additionalProperties: true
+                type: object
+              type: array
+          nullable: true
+          title: Highlighted Kudosers
+          default: []
+        hide_from_home:
+          anyOf:
+            - type: boolean
+          nullable: true
+          title: Hide From Home
+        device_name:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Device Name
+        embed_token:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Embed Token
+        segment_leaderboard_opt_out:
+          anyOf:
+            - type: boolean
+          nullable: true
+          title: Segment Leaderboard Opt Out
+        leaderboard_opt_out:
+          anyOf:
+            - type: boolean
+          nullable: true
+          title: Leaderboard Opt Out
+      type: object
+      required:
+        - id
+        - resource_state
+        - athlete
+        - name
+        - distance
+        - moving_time
+        - elapsed_time
+        - total_elevation_gain
+        - type
+        - sport_type
+        - start_date
+        - start_date_local
+        - timezone
+        - utc_offset
+        - achievement_count
+        - kudos_count
+        - comment_count
+        - athlete_count
+        - photo_count
+        - trainer
+        - commute
+        - manual
+        - private
+        - flagged
+        - average_speed
+        - max_speed
+        - has_heartrate
+        - pr_count
+        - total_photo_count
+        - has_kudoed
+      title: DetailedActivity
+    DetailedAthlete:
+      properties:
+        id:
+          type: integer
+          title: Id
+        username:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Username
+        resource_state:
+          type: integer
+          title: Resource State
+        firstname:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Firstname
+        lastname:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Lastname
+        city:
+          anyOf:
+            - type: string
+          nullable: true
+          title: City
+        state:
+          anyOf:
+            - type: string
+          nullable: true
+          title: State
+        country:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Country
+        sex:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Sex
+        premium:
+          anyOf:
+            - type: boolean
+          nullable: true
+          title: Premium
+        created_at:
+          anyOf:
+            - type: string
+              format: date-time
+          nullable: true
+          title: Created At
+        updated_at:
+          anyOf:
+            - type: string
+              format: date-time
+          nullable: true
+          title: Updated At
+        badge_type_id:
+          anyOf:
+            - type: integer
+          nullable: true
+          title: Badge Type Id
+        profile_medium:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Profile Medium
+        profile:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Profile
+        friend:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Friend
+        follower:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Follower
+        follower_count:
+          anyOf:
+            - type: integer
+          nullable: true
+          title: Follower Count
+        friend_count:
+          anyOf:
+            - type: integer
+          nullable: true
+          title: Friend Count
+        mutual_friend_count:
+          anyOf:
+            - type: integer
+          nullable: true
+          title: Mutual Friend Count
+        athlete_type:
+          anyOf:
+            - type: integer
+          nullable: true
+          title: Athlete Type
+        date_preference:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Date Preference
+        measurement_preference:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Measurement Preference
+        clubs:
+          anyOf:
+            - items:
+                additionalProperties: true
+                type: object
+              type: array
+          nullable: true
+          title: Clubs
+          default: []
+        ftp:
+          anyOf:
+            - type: integer
+          nullable: true
+          title: Ftp
+        weight:
+          anyOf:
+            - type: number
+          nullable: true
+          title: Weight
+        bikes:
+          anyOf:
+            - items:
+                additionalProperties: true
+                type: object
+              type: array
+          nullable: true
+          title: Bikes
+          default: []
+        shoes:
+          anyOf:
+            - items:
+                additionalProperties: true
+                type: object
+              type: array
+          nullable: true
+          title: Shoes
+          default: []
+      type: object
+      required:
+        - id
+        - resource_state
+      title: DetailedAthlete
+    DetailedClub:
+      properties:
+        id:
+          type: integer
+          title: Id
+        resource_state:
+          type: integer
+          title: Resource State
+        name:
+          type: string
+          title: Name
+        profile_medium:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Profile Medium
+        profile:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Profile
+        cover_photo:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Cover Photo
+        cover_photo_small:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Cover Photo Small
+        sport_type:
+          type: string
+          title: Sport Type
+        activity_types:
+          items:
+            type: string
+          type: array
+          title: Activity Types
+        city:
+          anyOf:
+            - type: string
+          nullable: true
+          title: City
+        state:
+          anyOf:
+            - type: string
+          nullable: true
+          title: State
+        country:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Country
+        private:
+          type: boolean
+          title: Private
+        member_count:
+          type: integer
+          title: Member Count
+        featured:
+          type: boolean
+          title: Featured
+        verified:
+          type: boolean
+          title: Verified
+        url:
+          type: string
+          title: Url
+        membership:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Membership
+        admin:
+          anyOf:
+            - type: boolean
+          nullable: true
+          title: Admin
+        owner:
+          anyOf:
+            - type: boolean
+          nullable: true
+          title: Owner
+        description:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Description
+        club_type:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Club Type
+        post_count:
+          anyOf:
+            - type: integer
+          nullable: true
+          title: Post Count
+        owner_id:
+          anyOf:
+            - type: integer
+          nullable: true
+          title: Owner Id
+        following_count:
+          anyOf:
+            - type: integer
+          nullable: true
+          title: Following Count
+      type: object
+      required:
+        - id
+        - resource_state
+        - name
+        - sport_type
+        - activity_types
+        - private
+        - member_count
+        - featured
+        - verified
+        - url
+      title: DetailedClub
+    DetailedSegment:
+      properties:
+        id:
+          type: integer
+          title: Id
+        resource_state:
+          type: integer
+          title: Resource State
+        name:
+          type: string
+          title: Name
+        activity_type:
+          type: string
+          title: Activity Type
+        distance:
+          type: number
+          title: Distance
+        average_grade:
+          type: number
+          title: Average Grade
+        maximum_grade:
+          type: number
+          title: Maximum Grade
+        elevation_high:
+          type: number
+          title: Elevation High
+        elevation_low:
+          type: number
+          title: Elevation Low
+        start_latlng:
+          items:
+            type: number
+          type: array
+          title: Start Latlng
+        end_latlng:
+          items:
+            type: number
+          type: array
+          title: End Latlng
+        climb_category:
+          type: integer
+          title: Climb Category
+        city:
+          anyOf:
+            - type: string
+          nullable: true
+          title: City
+        state:
+          anyOf:
+            - type: string
+          nullable: true
+          title: State
+        country:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Country
+        private:
+          type: boolean
+          title: Private
+        hazardous:
+          type: boolean
+          title: Hazardous
+        starred:
+          type: boolean
+          title: Starred
+        created_at:
+          anyOf:
+            - type: string
+              format: date-time
+          nullable: true
+          title: Created At
+        updated_at:
+          anyOf:
+            - type: string
+              format: date-time
+          nullable: true
+          title: Updated At
+        total_elevation_gain:
+          anyOf:
+            - type: number
+          nullable: true
+          title: Total Elevation Gain
+        map:
+          anyOf:
+            - additionalProperties: true
+              type: object
+          nullable: true
+          title: Map
+        effort_count:
+          anyOf:
+            - type: integer
+          nullable: true
+          title: Effort Count
+        athlete_count:
+          anyOf:
+            - type: integer
+          nullable: true
+          title: Athlete Count
+        star_count:
+          anyOf:
+            - type: integer
+          nullable: true
+          title: Star Count
+        athlete_segment_stats:
+          anyOf:
+            - additionalProperties: true
+              type: object
+          nullable: true
+          title: Athlete Segment Stats
+      type: object
+      required:
+        - id
+        - resource_state
+        - name
+        - activity_type
+        - distance
+        - average_grade
+        - maximum_grade
+        - elevation_high
+        - elevation_low
+        - start_latlng
+        - end_latlng
+        - climb_category
+        - private
+        - hazardous
+        - starred
+      title: DetailedSegment
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    StreamTypeEnum:
+      type: string
+      enum:
+        - time
+        - distance
+        - latlng
+        - altitude
+        - velocity_smooth
+        - heartrate
+        - cadence
+        - watts
+        - temp
+        - moving
+        - grade_smooth
+      title: StreamTypeEnum
+    SummaryActivity:
+      properties:
+        id:
+          type: integer
+          title: Id
+        resource_state:
+          type: integer
+          title: Resource State
+        external_id:
+          anyOf:
+            - type: string
+          nullable: true
+          title: External Id
+        upload_id:
+          anyOf:
+            - type: integer
+          nullable: true
+          title: Upload Id
+        athlete:
+          $ref: '#/components/schemas/SummaryAthlete'
+        name:
+          type: string
+          title: Name
+        distance:
+          type: number
+          title: Distance
+        moving_time:
+          type: integer
+          title: Moving Time
+        elapsed_time:
+          type: integer
+          title: Elapsed Time
+        total_elevation_gain:
+          type: number
+          title: Total Elevation Gain
+        type:
+          type: string
+          title: Type
+        sport_type:
+          type: string
+          title: Sport Type
+        workout_type:
+          anyOf:
+            - type: integer
+          nullable: true
+          title: Workout Type
+        start_date:
+          type: string
+          format: date-time
+          title: Start Date
+        start_date_local:
+          type: string
+          format: date-time
+          title: Start Date Local
+        timezone:
+          type: string
+          title: Timezone
+        utc_offset:
+          type: integer
+          title: Utc Offset
+        start_latlng:
+          anyOf:
+            - items:
+                type: number
+              type: array
+          nullable: true
+          title: Start Latlng
+        end_latlng:
+          anyOf:
+            - items:
+                type: number
+              type: array
+          nullable: true
+          title: End Latlng
+        location_city:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Location City
+        location_state:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Location State
+        location_country:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Location Country
+        achievement_count:
+          type: integer
+          title: Achievement Count
+        kudos_count:
+          type: integer
+          title: Kudos Count
+        comment_count:
+          type: integer
+          title: Comment Count
+        athlete_count:
+          type: integer
+          title: Athlete Count
+        photo_count:
+          type: integer
+          title: Photo Count
+        map:
+          anyOf:
+            - additionalProperties: true
+              type: object
+          nullable: true
+          title: Map
+        trainer:
+          type: boolean
+          title: Trainer
+        commute:
+          type: boolean
+          title: Commute
+        manual:
+          type: boolean
+          title: Manual
+        private:
+          type: boolean
+          title: Private
+        flagged:
+          type: boolean
+          title: Flagged
+        gear_id:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Gear Id
+        from_accepted_tag:
+          anyOf:
+            - type: boolean
+          nullable: true
+          title: From Accepted Tag
+        average_speed:
+          type: number
+          title: Average Speed
+        max_speed:
+          type: number
+          title: Max Speed
+        average_cadence:
+          anyOf:
+            - type: number
+          nullable: true
+          title: Average Cadence
+        average_watts:
+          anyOf:
+            - type: number
+          nullable: true
+          title: Average Watts
+        weighted_average_watts:
+          anyOf:
+            - type: integer
+          nullable: true
+          title: Weighted Average Watts
+        kilojoules:
+          anyOf:
+            - type: number
+          nullable: true
+          title: Kilojoules
+        device_watts:
+          anyOf:
+            - type: boolean
+          nullable: true
+          title: Device Watts
+        has_heartrate:
+          type: boolean
+          title: Has Heartrate
+        average_heartrate:
+          anyOf:
+            - type: number
+          nullable: true
+          title: Average Heartrate
+        max_heartrate:
+          anyOf:
+            - type: integer
+          nullable: true
+          title: Max Heartrate
+        max_watts:
+          anyOf:
+            - type: integer
+          nullable: true
+          title: Max Watts
+        pr_count:
+          type: integer
+          title: Pr Count
+        total_photo_count:
+          type: integer
+          title: Total Photo Count
+        has_kudoed:
+          type: boolean
+          title: Has Kudoed
+        suffer_score:
+          anyOf:
+            - type: integer
+          nullable: true
+          title: Suffer Score
+      type: object
+      required:
+        - id
+        - resource_state
+        - athlete
+        - name
+        - distance
+        - moving_time
+        - elapsed_time
+        - total_elevation_gain
+        - type
+        - sport_type
+        - start_date
+        - start_date_local
+        - timezone
+        - utc_offset
+        - achievement_count
+        - kudos_count
+        - comment_count
+        - athlete_count
+        - photo_count
+        - trainer
+        - commute
+        - manual
+        - private
+        - flagged
+        - average_speed
+        - max_speed
+        - has_heartrate
+        - pr_count
+        - total_photo_count
+        - has_kudoed
+      title: SummaryActivity
+    SummaryAthlete:
+      properties:
+        id:
+          type: integer
+          title: Id
+        resource_state:
+          type: integer
+          title: Resource State
+        firstname:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Firstname
+        lastname:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Lastname
+      type: object
+      required:
+        - id
+        - resource_state
+      title: SummaryAthlete
+    SummaryClub:
+      properties:
+        id:
+          type: integer
+          title: Id
+        resource_state:
+          type: integer
+          title: Resource State
+        name:
+          type: string
+          title: Name
+        profile_medium:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Profile Medium
+        profile:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Profile
+        cover_photo:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Cover Photo
+        cover_photo_small:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Cover Photo Small
+        sport_type:
+          type: string
+          title: Sport Type
+        city:
+          anyOf:
+            - type: string
+          nullable: true
+          title: City
+        state:
+          anyOf:
+            - type: string
+          nullable: true
+          title: State
+        country:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Country
+        private:
+          type: boolean
+          title: Private
+        member_count:
+          type: integer
+          title: Member Count
+        featured:
+          type: boolean
+          title: Featured
+        verified:
+          type: boolean
+          title: Verified
+        url:
+          type: string
+          title: Url
+      type: object
+      required:
+        - id
+        - resource_state
+        - name
+        - sport_type
+        - private
+        - member_count
+        - featured
+        - verified
+        - url
+      title: SummaryClub
+    SummarySegment:
+      properties:
+        id:
+          type: integer
+          title: Id
+        resource_state:
+          type: integer
+          title: Resource State
+        name:
+          type: string
+          title: Name
+        activity_type:
+          type: string
+          title: Activity Type
+        distance:
+          type: number
+          title: Distance
+        average_grade:
+          type: number
+          title: Average Grade
+        maximum_grade:
+          type: number
+          title: Maximum Grade
+        elevation_high:
+          type: number
+          title: Elevation High
+        elevation_low:
+          type: number
+          title: Elevation Low
+        start_latlng:
+          items:
+            type: number
+          type: array
+          title: Start Latlng
+        end_latlng:
+          items:
+            type: number
+          type: array
+          title: End Latlng
+        climb_category:
+          type: integer
+          title: Climb Category
+        city:
+          anyOf:
+            - type: string
+          nullable: true
+          title: City
+        state:
+          anyOf:
+            - type: string
+          nullable: true
+          title: State
+        country:
+          anyOf:
+            - type: string
+          nullable: true
+          title: Country
+        private:
+          type: boolean
+          title: Private
+        hazardous:
+          type: boolean
+          title: Hazardous
+        starred:
+          type: boolean
+          title: Starred
+      type: object
+      required:
+        - id
+        - resource_state
+        - name
+        - activity_type
+        - distance
+        - average_grade
+        - maximum_grade
+        - elevation_high
+        - elevation_low
+        - start_latlng
+        - end_latlng
+        - climb_category
+        - private
+        - hazardous
+        - starred
+      title: SummarySegment
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+              - type: string
+              - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+        - loc
+        - msg
+        - type
+      title: ValidationError
