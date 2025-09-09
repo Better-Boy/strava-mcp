@@ -1,11 +1,10 @@
 from fastapi import HTTPException, Query, Path, Header, APIRouter, Response
 
-from .models import *
-from .utils import *
+from strava_server.models import *
+from strava_server.utils import *
 
 router = APIRouter()
 
-# Athletes Endpoints
 @router.get("/athletes/{athlete_id}/stats", operation_id="getAthleteStats", response_model=ActivityStats)
 async def get_athlete_stats(
     athlete_id: int = Path(..., description="The identifier of the athlete"),

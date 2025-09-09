@@ -2,4 +2,4 @@ fastapi>=0.68.0
 uvicorn[standard]>=0.15.0
 httpx
 pydantic>=1.8.0
-fastapi-mcp
+fastmcp

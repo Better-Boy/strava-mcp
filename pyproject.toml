@@ -16,7 +16,8 @@ dependencies = [
     "uvicorn",
     "httpx",
     "pydantic>=1.8.0",
-    "fastapi-mcp"
+    "fastmcp",
+    "smithery"
 ]
 
 [project.scripts]
@@ -25,3 +26,5 @@ dev = "smithery.cli.dev:main"
 # Run server with interactive testing playground
 playground = "smithery.cli.playground:main"
 
+[tool.smithery]
+server = "strava_server.server:create_server"

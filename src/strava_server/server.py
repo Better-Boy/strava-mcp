@@ -1,24 +1,39 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from fastapi_mcp import FastApiMCP
-from .api import router
+from fastmcp import FastMCP
+from strava_server.api import router
+
+@asynccontextmanager
+async def app_lifespan(app: FastAPI):
+    yield
+    pass
+
+@asynccontextmanager
+async def combined_lifespan(fastapi_app: FastAPI):
+    async with app_lifespan(fastapi_app):
+        async with mcp_app.lifespan(fastapi_app):
+            yield
 
 app = FastAPI(
     title="Strava API v3",
     description="FastAPI implementation of Strava API v3",
-    version="3.0.0"
+    version="3.0.0",
+    lifespan=combined_lifespan
 )
 
 app.include_router(router=router)
 
-mcp = FastApiMCP(app, 
-                 name="MCP server for Strava API",
-                 description="")
+server = FastMCP.from_fastapi(app, 
+                 name="MCP server for Strava API")
 
-mcp.mount_http()
+def create_server():
+    global server
+    return server
 
-def run():
-    import uvicorn
-    uvicorn.run(app=app, host="0.0.0.0", port=8000)
+mcp_app = server.http_app(path='/mcp')
+
+app.mount("/llm", mcp_app)
 
 if __name__ == "__main__":
-    run()
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
