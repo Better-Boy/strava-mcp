@@ -16,10 +16,12 @@ mcp = FastApiMCP(app,
 
 mcp.mount_http()
 
-def run():
-    mcp.setup_server()
-    import uvicorn
-    uvicorn.run(app=app, host="0.0.0.0", port=8000)
+mcp.setup_server()
 
-if __name__ == "__main__":
-    run()
+# def run():
+    
+#     import uvicorn
+#     uvicorn.run(app=app, host="0.0.0.0", port=8000)
+
+# if __name__ == "__main__":
+#     run()
