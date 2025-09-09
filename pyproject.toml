@@ -1,0 +1,27 @@
+[build-system]
+requires = ["uv_build>=0.8.15,<0.9.0"]
+build-backend = "uv_build"
+
+[project]
+name = "strava_server"
+version = "0.1.0"
+description = "An MCP server for Strava API"
+authors = [
+    {name = "Abhilash", email = "panaroma365@gmail.com"}
+]
+
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.68.0",
+    "uvicorn[standard]>=0.15.0",
+    "httpx",
+    "pydantic>=1.8.0",
+    "fastapi-mcp"
+]
+
+[project.scripts]
+# Run the MCP server in development mode
+dev = "smithery.cli.dev:main"
+# Run server with interactive testing playground
+playground = "smithery.cli.playground:main"
+
