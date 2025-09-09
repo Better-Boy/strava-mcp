@@ -1,4 +1,4 @@
-openapi: 3.0.9
+openapi: 3.0.4
 info:
   title: Strava API v3
   description: FastAPI implementation of Strava API v3
