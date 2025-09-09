@@ -16,10 +16,9 @@ mcp = FastApiMCP(app,
 
 mcp.mount_http()
 
-# def run():
-    
-#     import uvicorn
-#     uvicorn.run(app=app, host="0.0.0.0", port=8000)
+def run():
+    import uvicorn
+    uvicorn.run(app=app, host="0.0.0.0", port=8000)
 
-# if __name__ == "__main__":
-#     run()
+if __name__ == "__main__":
+    run()
