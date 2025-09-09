@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi_mcp import FastApiMCP
-from strava_server.api import router
+from .api import router
 
 app = FastAPI(
     title="Strava API v3",
