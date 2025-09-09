@@ -16,7 +16,7 @@ mcp = FastApiMCP(app,
 
 mcp.mount_http()
 
-mcp.setup_server()
+mcp.run()
 
 # def run():
     
