@@ -16,8 +16,6 @@ mcp = FastApiMCP(app,
 
 mcp.mount_http()
 
-mcp.run()
-
 # def run():
     
 #     import uvicorn
