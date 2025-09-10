@@ -1,7 +1,7 @@
 from fastapi import HTTPException, Query, Path, Header, APIRouter, Response
 
-from models import *
-from utils import *
+from .models import *
+from .utils import *
 
 router = APIRouter()
 
