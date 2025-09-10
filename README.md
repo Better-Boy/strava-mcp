@@ -25,7 +25,6 @@ Team Members - Abhilash K R (Solo)
 
 Theme 2 - Theme 2: Build a Secure MCP Server for Agents (w/ Cequence)
 
-
 **How to run it**
 
 Refer [Installation docs](./INSTALLATION.md)
