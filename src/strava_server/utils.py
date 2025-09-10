@@ -1,5 +1,6 @@
 from fastapi import HTTPException
 import httpx
+import os
 
 STRAVA_BASE_URL = "https://www.strava.com/api/v3"
 
@@ -31,11 +32,16 @@ def extract_bearer_token(authorization: str) -> str:
 async def make_strava_request(
     method: str,
     endpoint: str,
-    token: str,
+    token: str = None,
     params: dict = None,
     data: dict = None,
     files: dict = None
 ):
+    if token is None:
+        token = os.getenv("STRAVA_ACCESS_TOKEN")
+        if token is None:
+            raise Exception("Please set the access_token for strava either via request headers or as environment variable")
+        
     headers = {"authorization": f"Bearer {token}"}
     url = f"{STRAVA_BASE_URL}{endpoint}"
     async with httpx.AsyncClient() as client:

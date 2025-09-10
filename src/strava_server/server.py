@@ -1,7 +1,8 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastmcp import FastMCP
-from strava_server.api import router
+from api import router
 
 @asynccontextmanager
 async def app_lifespan(app: FastAPI):
@@ -21,18 +22,24 @@ app = FastAPI(
     lifespan=combined_lifespan
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # or specific origins
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.include_router(router=router)
 
 server = FastMCP.from_fastapi(app, 
                  name="MCP server for Strava API")
 
+mcp_app = server.http_app(path='/mcp')
+
 def create_server():
     global server
     return server
-
-mcp_app = server.http_app(path='/mcp')
-
-app.mount("/llm", mcp_app)
 
 if __name__ == "__main__":
     import uvicorn

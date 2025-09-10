@@ -1,7 +1,7 @@
 from fastapi import HTTPException, Query, Path, Header, APIRouter, Response
 
-from strava_server.models import *
-from strava_server.utils import *
+from models import *
+from utils import *
 
 router = APIRouter()
 
