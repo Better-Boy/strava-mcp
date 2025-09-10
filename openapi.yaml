@@ -1,7 +1,7 @@
 openapi: 3.0.4
 info:
-  title: Strava API v3
-  description: FastAPI implementation of Strava API v3
+  title: Fitness Analysis
+  description: Fitness Analysis using Strava MCP server
   version: 3.0.0
 paths:
   /athletes/{athlete_id}/stats:
