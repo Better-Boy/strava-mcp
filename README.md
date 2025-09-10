@@ -44,7 +44,7 @@ Refer [Installation docs](./INSTALLATION.md)
 
 **Demo video link** 
 
-Youtube Video - [Fitness Analysis using Strava]()
+Youtube Video - [Fitness Analysis using Strava](https://www.youtube.com/watch?v=GqpFWU3qQd0)
 
 **What you'd do with more time**
 
