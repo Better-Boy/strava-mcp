@@ -15,7 +15,7 @@ Features:
 - Activity Analysis
 - Performance Insights
 
-Smithery Link - [Fitness Analysis Smithery]()
+Smithery Link - [Fitness Analysis Smithery](https://smithery.ai/server/@Better-Boy/strava-mcp)
 
 **Team name and member names**
 Team Name - mobilab
