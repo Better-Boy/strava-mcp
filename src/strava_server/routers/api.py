@@ -1,7 +1,7 @@
 from fastapi import HTTPException, Query, Path, Header, APIRouter, Response
 
-from .models import *
-from .utils import *
+from ..models import *
+from ..utils import *
 
 router = APIRouter()
 
@@ -283,16 +283,6 @@ async def get_athlete_routes(
     token = extract_bearer_token(authorization)
     params = {"page": page, "per_page": per_page}
     response = await make_strava_request("GET", f"/athletes/{athlete_id}/routes", token, params=params)
-    return response.json()
-
-@router.get("/uploads/{upload_id}", operation_id="getUploadById")
-async def get_upload_by_id(
-    upload_id: int = Path(..., description="The identifier of the upload"),
-    authorization: str = Header(..., description="Bearer token for authentication")
-):
-    """Returns an upload for a given identifier."""
-    token = extract_bearer_token(authorization)
-    response = await make_strava_request("GET", f"/uploads/{upload_id}", token)
     return response.json()
 
 # Streams Endpoints

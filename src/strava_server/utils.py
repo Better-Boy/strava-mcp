@@ -4,7 +4,6 @@ import os
 
 STRAVA_BASE_URL = "https://www.strava.com/api/v3"
 
-# Helper function to extract bearer token from Authorization header
 def extract_bearer_token(authorization: str) -> str:
     """Extract bearer token from Authorization header"""
     if not authorization:
@@ -19,7 +18,7 @@ def extract_bearer_token(authorization: str) -> str:
             detail="Authorization header must start with 'Bearer '"
         )
     
-    token = authorization[7:]  # Remove "Bearer " prefix
+    token = authorization[7:]
     if not token:
         raise HTTPException(
             status_code=401, 
@@ -28,7 +27,6 @@ def extract_bearer_token(authorization: str) -> str:
     
     return token
 
-# Helper function to make authenticated requests to Strava
 async def make_strava_request(
     method: str,
     endpoint: str,

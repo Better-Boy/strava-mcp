@@ -6,6 +6,8 @@ info:
 paths:
   /athletes/{athlete_id}/stats:
     get:
+      tags:
+        - Athlete
       summary: Get Athlete Stats
       description: Returns the activity stats of an athlete.
       operationId: getAthleteStats
@@ -41,6 +43,8 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /athlete:
     get:
+      tags:
+        - Athlete
       summary: Get Authenticated Athlete
       description: Returns the currently authenticated athlete.
       operationId: getAuthenticatedAthlete
@@ -67,6 +71,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
     put:
+      tags:
+        - Athlete
       summary: Update Authenticated Athlete
       description: Update the currently authenticated athlete.
       operationId: updateAuthenticatedAthlete
@@ -102,6 +108,8 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /athlete/zones:
     get:
+      tags:
+        - Athlete
       summary: Get Authenticated Athlete Zones
       description: Returns the authenticated athlete's heart rate and power zones.
       operationId: getAuthenticatedAthleteZones
@@ -128,6 +136,8 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /segments/{segment_id}:
     get:
+      tags:
+        - Athlete
       summary: Get Segment By Id
       description: Returns the specified segment.
       operationId: getSegmentById
@@ -163,6 +173,8 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /segments/starred:
     get:
+      tags:
+        - Athlete
       summary: Get Starred Segments
       description: List of the authenticated athlete's starred segments.
       operationId: getStarredSegments
@@ -215,6 +227,8 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /segments/explore:
     get:
+      tags:
+        - Athlete
       summary: Explore Segments
       description: Returns the top 10 segments matching a specified query.
       operationId: exploreSegments
@@ -285,6 +299,8 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /segment_efforts:
     get:
+      tags:
+        - Athlete
       summary: Get Segment Efforts
       description: Returns segment efforts for a given segment.
       operationId: getSegmentEfforts
@@ -352,6 +368,8 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /segment_efforts/{effort_id}:
     get:
+      tags:
+        - Athlete
       summary: Get Segment Effort By Id
       description: Returns a segment effort from an activity.
       operationId: getSegmentEffortById
@@ -386,6 +404,8 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /activities/{activity_id}:
     get:
+      tags:
+        - Athlete
       summary: Get Activity By Id
       description: Returns the given activity.
       operationId: getActivityById
@@ -432,6 +452,8 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /athlete/activities:
     get:
+      tags:
+        - Athlete
       summary: Get Athlete Activities
       description: Returns the activities of the authenticated athlete.
       operationId: getAthleteActivities
@@ -504,6 +526,8 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /activities/{activity_id}/laps:
     get:
+      tags:
+        - Athlete
       summary: Get Activity Laps
       description: Returns the laps of an activity.
       operationId: getActivityLaps
@@ -538,6 +562,8 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /activities/{activity_id}/zones:
     get:
+      tags:
+        - Athlete
       summary: Get Activity Zones
       description: Returns the zones of a given activity.
       operationId: getActivityZones
@@ -572,6 +598,8 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /activities/{activity_id}/comments:
     get:
+      tags:
+        - Athlete
       summary: Get Activity Comments
       description: Returns the comments on the given activity.
       operationId: getActivityComments
@@ -648,6 +676,8 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /activities/{activity_id}/kudos:
     get:
+      tags:
+        - Athlete
       summary: Get Activity Kudos
       description: Returns the athletes who kudoed an activity.
       operationId: getActivityKudos
@@ -704,6 +734,8 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /clubs/{club_id}:
     get:
+      tags:
+        - Athlete
       summary: Get Club By Id
       description: Returns a given club.
       operationId: getClubById
@@ -739,6 +771,8 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /clubs/{club_id}/members:
     get:
+      tags:
+        - Athlete
       summary: Get Club Members
       description: Returns club members.
       operationId: getClubMembers
@@ -795,6 +829,8 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /clubs/{club_id}/activities:
     get:
+      tags:
+        - Athlete
       summary: Get Club Activities
       description: Returns recent activities from club members.
       operationId: getClubActivities
@@ -851,6 +887,8 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /athlete/clubs:
     get:
+      tags:
+        - Athlete
       summary: Get Athlete Clubs
       description: Returns clubs the authenticated athlete belongs to.
       operationId: getAthleteClubs
@@ -903,6 +941,8 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /gear/{gear_id}:
     get:
+      tags:
+        - Athlete
       summary: Get Gear By Id
       description: Returns equipment using its identifier.
       operationId: getGearById
@@ -937,6 +977,8 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /routes/{route_id}:
     get:
+      tags:
+        - Athlete
       summary: Get Route By Id
       description: Returns a route using its identifier.
       operationId: getRouteById
@@ -971,6 +1013,8 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /athletes/{athlete_id}/routes:
     get:
+      tags:
+        - Athlete
       summary: Get Athlete Routes
       description: Returns routes created by the athlete.
       operationId: getAthleteRoutes
@@ -1025,42 +1069,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
-  /uploads/{upload_id}:
-    get:
-      summary: Get Upload By Id
-      description: Returns an upload for a given identifier.
-      operationId: getUploadById
-      parameters:
-        - name: upload_id
-          in: path
-          required: true
-          schema:
-            type: integer
-            description: The identifier of the upload
-            title: Upload Id
-          description: The identifier of the upload
-        - name: authorization
-          in: header
-          required: true
-          schema:
-            type: string
-            description: Bearer token for authentication
-            title: Authorization
-          description: Bearer token for authentication
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
   /activities/{activity_id}/streams:
     get:
+      tags:
+        - Athlete
       summary: Get Activity Streams
       description: Returns the given activity's streams.
       operationId: getSegmentStreams
@@ -1114,6 +1126,8 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /segment_efforts/{effort_id}/streams:
     get:
+      tags:
+        - Athlete
       summary: Get streams for a segment effort
       description: Returns streams data (like distance, time, etc.) for a given segment effort.
       operationId: getSegmentEffortStreams
@@ -1167,6 +1181,8 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /segments/{segment_id}/streams:
     get:
+      tags:
+        - Athlete
       summary: Get Segment Streams
       description: Returns the given segment's streams.
       operationId: getSegmentStreamById
@@ -1220,6 +1236,8 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /routes/{route_id}/streams:
     get:
+      tags:
+        - Athlete
       summary: Get Route Streams
       description: Returns the given route's streams.
       operationId: getRouteStreams
@@ -1254,6 +1272,8 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /health:
     get:
+      tags:
+        - Athlete
       summary: Health Check
       description: Health check endpoint.
       operationId: healthCheckForAPI
@@ -1265,6 +1285,8 @@ paths:
               schema: {}
   /:
     get:
+      tags:
+        - Athlete
       summary: Root
       description: API information and documentation.
       operationId: root__get
@@ -1274,6 +1296,195 @@ paths:
           content:
             application/json:
               schema: {}
+  /analysis/activity-distribution:
+    get:
+      tags:
+        - Analysis
+      summary: Activity Distribution
+      description: Distribution of activity types in last N days.
+      operationId: getActivityDistribution
+      parameters:
+        - name: days
+          in: query
+          required: false
+          schema:
+            type: integer
+            description: Timeframe in days
+            default: 90
+            title: Days
+          description: Timeframe in days
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Getactivitydistribution
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /analysis/pace-zones/{activity_id}:
+    get:
+      tags:
+        - Analysis
+      summary: Pace Zones
+      description: Analyze time spent in pace/speed zones.
+      operationId: getPaceZones
+      parameters:
+        - name: activity_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: The identifier of the activity
+            title: Activity Id
+          description: The identifier of the activity
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Getpacezones
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /analysis/elevation-trends:
+    get:
+      tags:
+        - Analysis
+      summary: Elevation Trends
+      description: Weekly elevation gain trends.
+      operationId: getElevationTrends
+      parameters:
+        - name: weeks
+          in: query
+          required: false
+          schema:
+            type: integer
+            description: Number of recent weeks
+            default: 8
+            title: Weeks
+          description: Number of recent weeks
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Getelevationtrends
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /insights/performance-efficiency/{activity_id}:
+    get:
+      tags:
+        - Insights
+      summary: Performance Efficiency
+      description: Check if HR efficiency improved within an activity.
+      operationId: getPerformanceEfficiency
+      parameters:
+        - name: activity_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: The identifier of the activity
+            title: Activity Id
+          description: The identifier of the activity
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Getperformanceefficiency
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /insights/recovery-risk:
+    get:
+      tags:
+        - Insights
+      summary: Recovery Risk
+      description: Compare 7-day vs 28-day load to detect overtraining.
+      operationId: getRecoveryRisk
+      parameters:
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token for authentication
+            title: Authorization
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Getrecoveryrisk
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
     ActivityStats:

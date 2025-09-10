@@ -3,7 +3,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastmcp import FastMCP
 from dotenv import load_dotenv
-from .api import router
+from .routers.api import router
+from .routers.analysis import analysis_router
+from .routers.insights import insights_router
 
 load_dotenv()
 
@@ -33,7 +35,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(router=router)
+app.include_router(router=router, tags=["Athlete"])
+app.include_router(router=analysis_router, tags=["Analysis"])
+app.include_router(router=insights_router, tags=["Insights"])
 
 server = FastMCP.from_fastapi(app, 
                  name="MCP server for Strava API")

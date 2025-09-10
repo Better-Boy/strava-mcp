@@ -106,7 +106,7 @@ class StravaTokenHelper:
         print(f"\n{auth_url}\n")
         print("2. Authorize the application when prompted")
         print("3. You'll be redirected to a URL like:")
-        print(f"   {self.REDIRECT_URI}/?state=&code=AUTHORIZATION_CODE&scope=...")
+        print(f"{self.REDIRECT_URI}/?state=&code=<AUTHORIZATION_CODE>&scope=...")
         print("4. Copy the 'code' parameter value from the redirected URL")
         print()
     
