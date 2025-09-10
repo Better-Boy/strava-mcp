@@ -1,0 +1,25 @@
+# Smithery configuration file: https://smithery.ai/docs/config#smitheryyaml
+
+startCommand:
+  type: stdio
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    required:
+      - strava_access_token
+    properties:
+      strava_access_token:
+        type: string
+        description: STRAVA ACCESS TOKEN
+  commandFunction:
+    # A function that produces the CLI command to start the MCP on stdio.
+    |-
+    (config) => ({
+      command: 'python',
+      args: ['src/strava_server/server.py'],
+      env: {
+        STRAVA_ACCESS_TOKEN: config.strava_access_token,
+      }
+    })
+  exampleConfig:
+    strava_access_token: your_strava_access_token
