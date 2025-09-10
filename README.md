@@ -1,11 +1,12 @@
-# Fitness Analysis using Strava MCP Server
+# Fitness Analysis using Strava
 
-This project implements a Model Context Protocol (MCP) server in python that acts as a bridge to the Strava API. It exposes Strava data and functionalities as "tools" that Large Language Models (LLMs) can utilize through the MCP standard.
+**Project name: Fitness Analysis using Strava**
 
-Smithery Link - [Fitness Analysis Smithery]()  
-Youtube Video - [Fitness Analysis using Strava]()
+**Short description**
 
-## Features
+This project implements a Model Context Protocol (MCP) server in python that acts as a bridge to the Strava API with authentication and authorization handled by cequence. It exposes Strava data and analytical functionalities as "tools" that Large Language Models (LLMs) can utilize through the MCP standard.
+
+Features:
 
 - Access recent activities, profile, and stats.
 - Fetch detailed activity streams (power, heart rate, cadence, etc.).
@@ -14,122 +15,77 @@ Youtube Video - [Fitness Analysis using Strava]()
 - Activity Analysis
 - Performance Insights
 
-## Installation & Setup
+Smithery Link - [Fitness Analysis Smithery]()
 
-**Prerequisites:**
-   - Python
-   - uv (https://docs.astral.sh/uv)
-   - A Strava Account
-   - Cequence Gateway (optional)
+**Team name and member names**
+Team Name - mobilab
+Team Members - Abhilash K R (Solo)
 
-### 1. Strava Account and OAuth Setup
+**Which hackathon theme / challenge was addressed**
 
-1. Go to [https://www.strava.com/settings/api](https://www.strava.com/settings/api)
-2. Create a new application:
-   - Enter your application details (name, website, description)
-   - Important: 
-      - If you are using Cequence Gateway, set the  as `Authorization Callback Domain` as `auth.aigateway.cequence.ai`
-      - If you are setting up on `stdio`, set the `Authorization Callback Domain` as `localhost`
-   - Note down your Client ID and Client Secret
-
-This is for Local Setup Only:
-1. In order to get the access_token, run the following command - 
-   ```bash
-   python auth_scripts/oauth_flow.py
-   ```
-2. The above script will ask for your client-id, client-secret
-3. Open the url in your browser and give the necessary access
-4. After giving permissions, will get a Apache webpage.
-5. From the Apache Webpage URL i.e `..../?state=&code=<AUTHORIZATION_CODE>&scope=...`, copy the `AUTHORIZATION_CODE`
-6. Paste the code in the terminal
-7. An `.env` file with the following tokens will be created
-
-```
-STRAVA_ACCESS_TOKEN=...
-STRAVA_EXPIRES_AT=...
-STRAVA_REFRESH_TOKEN=...
-```
-
-### 2. MCP server setup using Cequence AI gateway
-
-1. **Clone Repository:**
-   ```bash
-   git clone https://github.com/Better-Boy/strava-mcp.git
-   cd strava-mcp
-   ```
-
-2. **Create Custom App:**
-   - Create a custom app using the file `openapi.yaml`. 
-
-3. **Create MCP Server**
-   - Create a MCP server using oauth as the authentication and authorization. 
-   - Specify `Authorization URL` as `https://www.strava.com/oauth/authorize`
-   - Specify `Token URL` as `https://www.strava.com/api/v3/oauth/token`
-   - Specify `Client ID` as `your client id`
-   - Specify `Client Secret` as `your client secret`
-   - Specify `Scopes` as `read,read_all,profile:read_all,activity:read_all` - don't change this as cequence uses spaces for multiple scopes but strava uses comma.
-
-Refer Strava OAuth Documentation - [Strava OAuth Docs](https://developers.strava.com/docs/authentication/)
-For further instructions, refer [Cequence Docs](https://docs.aigateway.cequence.ai/docs/getstarted)
+Theme 2 - Theme 2: Build a Secure MCP Server for Agents (w/ Cequence)
 
 
-### 3. Local MCP Server setup
+**How to run it**
 
-1. Install `uv`
-2. Run the following command
+Refer [Installation docs](./INSTALLATION.md)
 
-```bash
-uv sync
-uv run src/strava_server/server.py
-```
+**High Level Diagram**
 
-Now, you can access the mcp server at `http://0.0.0.0:8000/mcp` and the fastapi server at the `http://0.0.0.0:8000`.
+![architecture](./assests/archi.png)
 
+**Tech stack used (including required tech)**
 
-### 4. MCP Client setup
+- Python
+   - uv as package manager
+   - fastapi
+- Cequence for auth
+- Vercel for deployment
+- Windsurf as MCP Client
 
-- If using cequence, add the following,
+**Demo video link** 
 
-   ```json
-   {
-      "mcpServers": {
-         "strava": {
-            "command": "npx",
-            "args": [
-            "-y",
-            "@cequenceai/mcp-remote",
-            "<MCP_ENDPOINT>"
-            ]
-         }
-   }
-   ```
-- If using stdio, add the following,
+Youtube Video - [Fitness Analysis using Strava]()
 
-You can either use the `.env` to set the token, or pass the token in the form of headers.
+**What you'd do with more time**
 
-```json
-{
-      "mcpServers": {
-         "strava": {
-            "type": "streamable-http",
-            "url": "http://localhost:8000/mcp",
-            "headers": {
-               "authorization": "Bearer <token>"
-            }
-         }
-   }
-```
+1. Understand Cequence AI gateway better.
+2. Integrate with more fitness platforms like intervals.icu. Intervals.icu provides highly rich data which is very useful for analysis
+3. Implement route map visualization as an endpoint
 
+**My Journey**
+
+* I have to say, Descope runs one of the best blogs on security.
+* Through it, I learned a lot about security—a notoriously challenging topic—and how Descope simplifies integrating security into applications.
+* Since I was new to the concept of MCP servers, this hackathon gave me the chance to dive deep into MCP and, more importantly, to explore how security can be handled effectively using the Cequence AI Gateway.
+
+Challenges I Faced:
+
+1. I accidentally removed myself from the Cequence user management tab. Thankfully, **Sahit** was quick to add me back.
+2. I ran into a roadblock when the Cequence MCP server deployment kept getting stuck without any logs explaining the failure. Eventually, I realized the issue (with sahit's help) was due to specifying an invalid OpenAPI version—something spec parsers like Swagger don’t flag clearly.
+
+Reflections:
+
+Overall, this was an amazing learning journey into both MCP and security.
+
+Acknowledgments:
+
+Thanks to descope, cequence and all sponsors for organizing this event.
+
+Special mention:
+
+* **Sahit Jain** from Cequence, for always stepping in when I was stuck on the gateway.
+* **Abhishek Iyer**, for patiently answering questions during the event.
+
+---
 ## Natural Language Interaction Examples
 
 Here's some of the examples you can try when interacting with claude or any mcp client with LLM.
 
-
 - Show my recent activities on strava
 - Analyze my performance efficiency
 - What is my recovery risk after my recent runs?
-- 
-- 
+- Analyze my elevation and give suggestions
 
 Detailed Documentation of the endpoints can be here - [Endpoints & Scopes](./ENDPOINT_DETAILS.md)
 
