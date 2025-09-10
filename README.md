@@ -2,7 +2,7 @@
 
 This project implements a Model Context Protocol (MCP) server in python that acts as a bridge to the Strava API. It exposes Strava data and functionalities as "tools" that Large Language Models (LLMs) can utilize through the MCP standard.
 
-Smithery Link - [Fitness Analysis Smithery]()
+Smithery Link - [Fitness Analysis Smithery]()  
 Youtube Video - [Fitness Analysis using Strava]()
 
 ## Features
@@ -16,7 +16,7 @@ Youtube Video - [Fitness Analysis using Strava]()
 
 ## Installation & Setup
 
-1. **Prerequisites:**
+**Prerequisites:**
    - Python
    - uv (https://docs.astral.sh/uv)
    - A Strava Account
