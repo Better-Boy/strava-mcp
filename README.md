@@ -23,7 +23,7 @@ Team Members - Abhilash K R (Solo)
 
 **Which hackathon theme / challenge was addressed**
 
-Theme 2 - Theme 2: Build a Secure MCP Server for Agents (w/ Cequence)
+Theme 2: Build a Secure MCP Server for Agents (w/ Cequence)
 
 **How to run it**
 
