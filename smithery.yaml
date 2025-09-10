@@ -1,1 +1,6 @@
 runtime: python
+
+auth:
+  type: bearer
+  header: Authorization
+  prefix: "Bearer "
