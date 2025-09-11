@@ -86,7 +86,7 @@ Here's some of the examples you can try when interacting with claude or any mcp 
 - What is my recovery risk after my recent runs?
 - Analyze my elevation and give suggestions
 
-Detailed Documentation of the endpoints can be here - [Endpoints & Scopes](./ENDPOINT_DETAILS.md)
+Detailed Documentation of the tools can be here - [Tools & Scopes](./ENDPOINT_DETAILS.md)
 
 ---
 
