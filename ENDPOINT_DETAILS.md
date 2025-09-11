@@ -1,4 +1,4 @@
-## Endpoint Details
+## Endpoint & Tool Details
 
 All endpoints require an **Authorization header** with a valid bearer token:
 
@@ -10,11 +10,12 @@ OAuth2 scopes determine which endpoints a token can access. See [Strava API Scop
 
 ---
 
-## 📊 Analytics Endpoints
+## 📊 Analytics Tools
 
 ### `GET /analysis/activity-distribution`
 
 * **Description**: Distribution of activity types in the last N days.
+* **Tool Name**: getActivityDistribution
 * **Query Params**:
 
   * `days` (int, default=90) → Timeframe in days.
@@ -107,7 +108,7 @@ OAuth2 scopes determine which endpoints a token can access. See [Strava API Scop
 
 ---
 
-## 📊 Insights Endpoints
+## 📊 Insights Tools
 
 ### `GET /insights/performance-efficiency/{activity_id}`
 
@@ -162,7 +163,7 @@ OAuth2 scopes determine which endpoints a token can access. See [Strava API Scop
 
 ---
 
-## 🏃 Athlete Endpoints
+## 🏃 Athlete Tools
 
 ### `GET /athletes/{athlete_id}/stats`
 
@@ -192,7 +193,7 @@ OAuth2 scopes determine which endpoints a token can access. See [Strava API Scop
 
 ---
 
-## 📍 Segment Endpoints
+## 📍 Segment Tools
 
 ### `GET /segments/{segment_id}`
 
@@ -215,7 +216,7 @@ OAuth2 scopes determine which endpoints a token can access. See [Strava API Scop
 
 ---
 
-## ⏱️ Segment Efforts Endpoints
+## ⏱️ Segment Efforts Tools
 
 ### `GET /segment_efforts`
 
@@ -231,7 +232,7 @@ OAuth2 scopes determine which endpoints a token can access. See [Strava API Scop
 
 ---
 
-## 🏃 Activity Endpoints
+## 🏃 Activity Tools
 
 ### `GET /activities/{activity_id}`
 
@@ -275,7 +276,7 @@ OAuth2 scopes determine which endpoints a token can access. See [Strava API Scop
 
 ---
 
-## 👥 Clubs Endpoints
+## 👥 Clubs Tools
 
 ### `GET /clubs/{club_id}`
 
@@ -305,7 +306,7 @@ OAuth2 scopes determine which endpoints a token can access. See [Strava API Scop
 
 ---
 
-## 👟 Gear Endpoints
+## 👟 Gear Tools
 
 ### `GET /gear/{gear_id}`
 
@@ -314,7 +315,7 @@ OAuth2 scopes determine which endpoints a token can access. See [Strava API Scop
 
 ---
 
-## 🗺️ Routes Endpoints
+## 🗺️ Routes Tools
 
 ### `GET /routes/{route_id}`
 
@@ -330,7 +331,7 @@ OAuth2 scopes determine which endpoints a token can access. See [Strava API Scop
 
 ---
 
-## 📊 Streams Endpoints
+## 📊 Streams Tools
 
 ### `GET /activities/{activity_id}/streams`
 
@@ -360,7 +361,7 @@ OAuth2 scopes determine which endpoints a token can access. See [Strava API Scop
 
 ---
 
-## 🩺 Utility Endpoints
+## 🩺 Utility Tools
 
 ### `GET /health`
 
