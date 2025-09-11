@@ -15,8 +15,8 @@ Features:
 - Activity Analysis
 - Performance Insights
 
-**Team name and member names**
-Team Name - mobilab
+**Team name and member names**  
+Team Name - mobilab  
 Team Members - Abhilash K R (Solo)
 
 **Which hackathon theme / challenge was addressed**
@@ -36,7 +36,7 @@ Refer [Installation docs](./INSTALLATION.md)
 - Python
    - uv as package manager
    - fastapi
-- Cequence for auth
+- Cequence AI gateway for authentication and authorization
 - Vercel for deployment
 - Windsurf as MCP Client
 
@@ -49,7 +49,7 @@ Smithery Link - [Fitness Analysis Smithery](https://smithery.ai/server/@Better-B
 **What you'd do with more time**
 
 1. Understand Cequence AI gateway better.
-2. Integrate with more fitness platforms like intervals.icu. Intervals.icu provides highly rich data which is very useful for analysis
+2. Integrate with more fitness platforms like intervals.icu, oura ring. Intervals.icu provides highly rich data which is very useful for analysis
 3. Implement route map visualization as an endpoint
 
 **My Journey**
