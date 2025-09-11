@@ -15,8 +15,6 @@ Features:
 - Activity Analysis
 - Performance Insights
 
-Smithery Link - [Fitness Analysis Smithery](https://smithery.ai/server/@Better-Boy/strava-mcp)
-
 **Team name and member names**
 Team Name - mobilab
 Team Members - Abhilash K R (Solo)
@@ -45,6 +43,8 @@ Refer [Installation docs](./INSTALLATION.md)
 **Demo video link** 
 
 Youtube Video - [Fitness Analysis using Strava](https://www.youtube.com/watch?v=GqpFWU3qQd0)
+
+Smithery Link - [Fitness Analysis Smithery](https://smithery.ai/server/@Better-Boy/strava-mcp)
 
 **What you'd do with more time**
 
