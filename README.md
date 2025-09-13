@@ -42,9 +42,9 @@ Refer [Installation docs](./INSTALLATION.md)
 
 **Demo video link** 
 
-Youtube Video - [Fitness Analysis using Strava](https://www.youtube.com/watch?v=GqpFWU3qQd0)
+Youtube Video - [Fitness Assistant using Strava](https://www.youtube.com/watch?v=GqpFWU3qQd0)
 
-Smithery Link - [Fitness Analysis Smithery](https://smithery.ai/server/@Better-Boy/strava-mcp)
+Smithery Link - [Fitness Assistant Smithery](https://smithery.ai/server/@Better-Boy/strava-mcp)
 
 **What you'd do with more time**
 
