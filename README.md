@@ -1,6 +1,6 @@
-# Fitness Analysis using Strava
+# Fitness Assistant using Strava
 
-**Project name: Fitness Analysis using Strava**
+**Project name: Fitness Assistant using Strava**
 
 **Short description**
 
